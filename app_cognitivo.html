@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade Cognitivo Jurídico | Master Advanced</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --secondary: #60a5fa;
+            --accent: #8b5cf6;
+            --background: #0f172a;
+            --card: #1e2937;
+            --text: #e2e8f0;
+            --text-light: #cbd5e1;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        h2 {
+            color: #60a5fa;
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 25px;
+            background: #1e2937;
+            padding: 6px;
+            border-radius: 12px;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 14px;
+            background: #334155;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+            color: var(--text-light);
+        }
+        
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .panel {
+            display: none;
+            background: var(--card);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .panel.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-light);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 16px;
+            background: #334155;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 15px;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        button.action-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        button.action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #1e2937;
+            border-left: 5px solid var(--accent);
+            display: none;
+        }
+        
+        .status-recording {
+            color: #ef4444;
+            font-weight: bold;
+            animation: blink 1.2s infinite;
+        }
+        
+        @keyframes blink { 
+            0%, 100% { opacity: 1; } 
+            50% { opacity: 0.4; } 
+        }
+        
+        .success { color: #4ade80; }
+        .danger { color: #f87171; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h2>⚖️ Upgrade Cognitivo Jurídico</h2>
+        <p><strong>Master Advanced Edition</strong> — Método Maurício Pereira Simões + IA de Elite</p>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('modulo1')">1. Gravador Cognitivo</button>
+        <button class="tab-btn" onclick="switchTab('modulo2')">2. Círculo Hermenêutico</button>
+        <button class="tab-btn" onclick="switchTab('modulo3')">3. Configurações</button>
+    </div>
+
+    <!-- Módulo 1 -->
+    <div id="modulo1" class="panel active">
+        <h3>🎤 Módulo 1: Áudio-Cognição (Falar em Voz Alta)</h3>
+        <div class="form-group">
+            <label>Matéria de Estudo</label>
+            <input type="text" id="m1-materia" placeholder="Ex: Direito Constitucional - Princípio da Proporcionalidade">
+        </div>
+        <div class="form-group">
+            <button type="button" id="record-btn" onclick="toggleRecording()" style="background:#334155; color:white; padding:14px; font-size:16px;">
+                🎤 Iniciar Captura de Voz
+            </button>
+            <span id="recording-status" class="status-recording" style="display:none; margin-left:15px; vertical-align:middle;">● Gravando...</span>
+        </div>
+        <div class="form-group">
+            <label>Transcrição (edite se necessário)</label>
+            <textarea id="m1-transcricao" placeholder="Sua fala aparecerá aqui em tempo real..."></textarea>
+        </div>
+        <button class="action-btn" onclick="processarModulo1()">✦ Enviar para Análise Epistemológica Avançada</button>
+        <div id="m1-resultado" class="result-box"></div>
+    </div>
+
+    <!-- Módulo 2 -->
+    <div id="modulo2" class="panel">
+        <h3>🔄 Módulo 2: Círculo Hermenêutico Avançado</h3>
+        <div class="form-group">
+            <label>Matéria</label>
+            <input type="text" id="m2-materia" placeholder="Ex: Direito do Trabalho">
+        </div>
+        <div class="form-group">
+            <label>1. O Caso (Fato)</label>
+            <textarea id="m2-caso" placeholder="Descreva o caso concreto..."></textarea>
+        </div>
+        <div class="form-group">
+            <label>2. A Norma (Fundamentação Jurídica Sólida)</label>
+            <textarea id="m2-norma" placeholder="Cite artigos, súmulas, teses, precedentes..."></textarea>
+        </div>
+        <div class="form-group">
+            <label>3. A Solução Proposta</label>
+            <textarea id="m2-solucao" placeholder="Qual sua conclusão?"></textarea>
+        </div>
+        <button class="action-btn" onclick="processarModulo2()">⚖️ Validar com Professor IA de Elite</button>
+        <div id="m2-resultado" class="result-box"></div>
+    </div>
+
+    <!-- Módulo 3 -->
+    <div id="modulo3" class="panel">
+        <h3>⚙️ Configurações & Dados</h3>
+        <div class="form-group">
+            <label>🔑 Chave da API Gemini (fica salva apenas no seu navegador)</label>
+            <input type="password" id="api-key" placeholder="AIzaSy...">
+            <small style="color:#94a3b8;">Nunca compartilhe sua chave. Ela não sai do seu computador.</small>
+        </div>
+
+        <h3>Seu Progresso</h3>
+        <p style="font-size:1.3rem;">Total de ciclos completados: <strong id="total-registros" style="color:var(--accent);">0</strong></p>
+
+        <div style="display:flex; gap:12px; margin-top:20px;">
+            <button class="action-btn" onclick="exportarCSV()" style="background:#22c55e;">📥 Exportar CSV (Excel/Power BI)</button>
+            <button class="action-btn" onclick="limparBanco()" style="background:#ef4444;">🗑️ Limpar Histórico</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // === Configurações Globais ===
+    let recognition;
+    let isRecording = false;
+
+    window.onload = () => {
+        document.getElementById('api-key').value = localStorage.getItem('gemini_api_key') || '';
+        atualizarContador();
+        initSpeechRecognition();
+    };
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // === Speech Recognition ===
+    function initSpeechRecognition() {
+        if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+            alert("Seu navegador não suporta captura de voz. Use Chrome ou Edge.");
+            return;
+        }
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'pt-BR';
+
+        recognition.onresult = (event) => {
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                transcript += event.results[i][0].transcript;
+            }
+            document.getElementById('m1-transcricao').value = transcript;
+        };
+    }
+
+    function toggleRecording() {
+        if (!recognition) return;
+        const btn = document.getElementById('record-btn');
+        const status = document.getElementById('recording-status');
+
+        if (!isRecording) {
+            recognition.start();
+            isRecording = true;
+            btn.textContent = "🛑 Parar Gravação";
+            btn.style.background = "#ef4444";
+            status.style.display = "inline";
+        } else {
+            recognition.stop();
+            isRecording = false;
+            btn.textContent = "🎤 Iniciar Captura de Voz";
+            btn.style.background = "#334155";
+            status.style.display = "none";
+        }
+    }
+
+    // === Chamada à Gemini ===
+    async function chamarGemini(systemPrompt, userInput) {
+        const apiKey = document.getElementById('api-key').value.trim();
+        if (!apiKey) {
+            alert("⚠️ Insira sua chave da API Gemini na aba Configurações.");
+            return null;
+        }
+        localStorage.setItem('gemini_api_key', apiKey);
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: `${systemPrompt}\n\nInput do aluno:\n${userInput}` }]
+                    }],
+                    generationConfig: { responseMimeType: "application/json" }
+                })
+            });
+
+            const data = await response.json();
+            return JSON.parse(data.candidates[0].content.parts[0].text);
+        } catch (e) {
+            console.error(e);
+            alert("Erro ao conectar com a IA. Verifique sua chave e conexão.");
+            return null;
+        }
+    }
+
+    // === Processamento Módulo 1 ===
+    async function processarModulo1() {
+        const materia = document.getElementById('m1-materia').value.trim();
+        const texto = document.getElementById('m1-transcricao').value.trim();
+        if (!texto) return alert("Transcrição vazia.");
+
+        const sysPrompt = `Você é um professor de Direito extremamente rigoroso e didático. Analise o discurso do aluno. Responda EXATAMENTE neste JSON: {"score_tecnico": number(1-5), "analise_critica": "string até 250 chars", "lacunas": ["item1", "item2"], "sugestao_melhoria": "string"}`;
+
+        const box = document.getElementById('m1-resultado');
+        box.style.display = "block";
+        box.innerHTML = "<p>Analisando cognição jurídica...</p>";
+
+        const res = await chamarGemini(sysPrompt, texto);
+        if (res) {
+            box.innerHTML = `
+                <strong>Nota Técnica:</strong> ${res.score_tecnico}/5<br>
+                <strong>Análise:</strong> ${res.analise_critica}<br>
+                <strong>Lacunas:</strong> ${res.lacunas?.join(' • ') || 'Nenhuma'}<br>
+                <strong>Sugestão:</strong> ${res.sugestao_melhoria || 'Ótimo desempenho.'}
+            `;
+            salvarNoBanco("Gravador Cognitivo", materia, texto, res.score_tecnico, res.lacunas || []);
+        }
+    }
+
+    // === Processamento Módulo 2 ===
+    async function processarModulo2() {
+        const materia = document.getElementById('m2-materia').value.trim();
+        const caso = document.getElementById('m2-caso').value.trim();
+        const norma = document.getElementById('m2-norma').value.trim();
+        const solucao = document.getElementById('m2-solucao').value.trim();
+
+        if (!caso || !norma || !solucao) return alert("Preencha todos os campos.");
+
+        const sysPrompt = `Você é um professor de Direito de alto nível. Avalie com rigor se a norma está bem fundamentada ou se é achismo. Responda exatamente neste JSON: {"aprovado": boolean, "score_tecnico": number(1-5), "feedback": "string até 200 chars", "sugestao": "string"}`;
+
+        const inputCompilado = `CASO: ${caso}\nNORMA: ${norma}\nSOLUÇÃO: ${solucao}`;
+
+        const box = document.getElementById('m2-resultado');
+        box.style.display = "block";
+        box.innerHTML = "<p>Validando raciocínio jurídico...</p>";
+
+        const res = await chamarGemini(sysPrompt, inputCompilado);
+        if (res) {
+            box.innerHTML = `
+                <strong>Status:</strong> ${res.aprovado ? '<span class="success">✅ Aprovado</span>' : '<span class="danger">❌ Precisa melhorar</span>'}<br>
+                <strong>Nota:</strong> ${res.score_tecnico}/5<br>
+                <strong>Feedback:</strong> ${res.feedback}<br>
+                <strong>Sugestão:</strong> ${res.sugestao || ''}
+            `;
+            if (res.aprovado) {
+                salvarNoBanco("Círculo Hermenêutico", materia, inputCompilado, res.score_tecnico, []);
+            }
+        }
+    }
+
+    // === Banco Local ===
+    function salvarNoBanco(modulo, materia, input, score, lacunas) {
+        const banco = JSON.parse(localStorage.getItem('banco_cognitivo') || '[]');
+        banco.push({
+            data_hora: new Date().toISOString(),
+            modulo,
+            materia: materia || "Sem matéria",
+            input_usuario: input,
+            score_tecnico: score,
+            lacunas
+        });
+        localStorage.setItem('banco_cognitivo', JSON.stringify(banco));
+        atualizarContador();
+    }
+
+    function atualizarContador() {
+        const banco = JSON.parse(localStorage.getItem('banco_cognitivo') || '[]');
+        document.getElementById('total-registros').textContent = banco.length;
+    }
+
+    function limparBanco() {
+        if (confirm("Apagar todo o histórico de estudos?")) {
+            localStorage.removeItem('banco_cognitivo');
+            atualizarContador();
+        }
+    }
+
+    function exportarCSV() {
+        const banco = JSON.parse(localStorage.getItem('banco_cognitivo') || '[]');
+        if (!banco.length) return alert("Nenhum registro para exportar.");
+
+        let csv = "\uFEFFdata_hora,modulo,materia,score,lacunas,input\n";
+        banco.forEach(r => {
+            const lacunasStr = r.lacunas ? r.lacunas.join('; ') : '';
+            csv += `"${r.data_hora}","${r.modulo}","${r.materia}",${r.score_tecnico},"${lacunasStr}","${r.input_usuario.replace(/"/g, '""')}"\n`;
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `historico_cognitivo_${new Date().toISOString().slice(0,10)}.csv`;
+        link.click();
+    }
+</script>
+</body>
+</html>
