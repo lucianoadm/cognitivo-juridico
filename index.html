@@ -400,21 +400,31 @@ async function chamarGemini(promptSistema, promptUsuario) {
         const texto = document.getElementById('m1-transcricao').value.trim();
         if (!texto) return alert("Transcrição vazia.");
 
-        const sysPrompt = `Você é um professor de Direito extremamente rigoroso e didático. Analise o discurso do aluno. Responda EXATAMENTE neste JSON: {"score_tecnico": number(1-5), "analise_critica": "string até 250 chars", "lacunas": ["item1", "item2"], "sugestao_melhoria": "string"}`;
+        const sysPrompt = `Você é um professor de Direito extremamente rigoroso e didático. Analise o discurso do aluno. Responda EXATAMENTE neste formato JSON, sem formatações adicionais de markdown: {"score_tecnico": 5, "analise_critica": "texto aqui", "lacunas": ["item1", "item2"], "sugestao_melhoria": "texto aqui"}`;
 
         const box = document.getElementById('m1-resultado');
         box.style.display = "block";
-        box.innerHTML = "<p>Analisando cognição jurídica...</p>";
+        box.innerHTML = "<p style='color: #60a5fa;'>Analisando cognição jurídica...</p>";
 
         const res = await chamarGemini(sysPrompt, texto);
         if (res) {
+            // Garante o mapeamento mesmo que a IA mude sutilmente as chaves
+            const nota = res.score_tecnico || res.score || 0;
+            const analise = res.analise_critica || res.analise || '';
+            const lacunas = res.lacunas ? (Array.isArray(res.lacunas) ? res.lacunas.join(' • ') : res.lacunas) : 'Nenhuma';
+            const sugestao = res.sugestao_melhoria || res.sugestao || '';
+
             box.innerHTML = `
-                <strong>Nota Técnica:</strong> ${res.score_tecnico}/5<br>
-                <strong>Análise:</strong> ${res.analise_critica}<br>
-                <strong>Lacunas:</strong> ${res.lacunas?.join(' • ') || 'Nenhuma'}<br>
-                <strong>Sugestão:</strong> ${res.sugestao_melhoria || 'Ótimo desempenho.'}
+                <div style="margin-top: 10px;">
+                    <p><strong>Nota Técnica:</strong> ${nota}/5</p>
+                    <p><strong>Análise Crítica:</strong> ${analise}</p>
+                    <p><strong>Lacunas Mapeadas:</strong> <span style="color: #f87171;">${lacunas}</span></p>
+                    <p><strong>Sugestão de Estudo:</strong> ${sugestao}</p>
+                </div>
             `;
-            salvarNoBanco("Gravador Cognitivo", materia, texto, res.score_tecnico, res.lacunas || []);
+            salvarNoBanco("Gravador Cognitivo", materia, texto, nota, Array.isArray(res.lacunas) ? res.lacunas : []);
+        } else {
+            box.innerHTML = "<p style='color: #ef4444;'>Falha ao processar resposta da IA.</p>";
         }
     }
 
@@ -427,25 +437,34 @@ async function chamarGemini(promptSistema, promptUsuario) {
 
         if (!caso || !norma || !solucao) return alert("Preencha todos os campos.");
 
-        const sysPrompt = `Você é um professor de Direito de alto nível. Avalie com rigor se a norma está bem fundamentada ou se é achismo. Responda exatamente neste JSON: {"aprovado": boolean, "score_tecnico": number(1-5), "feedback": "string até 200 chars", "sugestao": "string"}`;
+        const sysPrompt = `Você é um professor de Direito de alto nível. Avalie se a norma jurídica citada fundamenta o caso de forma técnica ou se é mero achismo. Responda EXATAMENTE neste formato JSON, sem formatações adicionais de markdown: {"aprovado": true, "score_tecnico": 5, "feedback": "texto aqui", "sugestao": "texto aqui"}`;
 
         const inputCompilado = `CASO: ${caso}\nNORMA: ${norma}\nSOLUÇÃO: ${solucao}`;
 
         const box = document.getElementById('m2-resultado');
         box.style.display = "block";
-        box.innerHTML = "<p>Validando raciocínio jurídico...</p>";
+        box.innerHTML = "<p style='color: #60a5fa;'>Validando raciocínio jurídico...</p>";
 
         const res = await chamarGemini(sysPrompt, inputCompilado);
         if (res) {
+            const aprovado = res.aprovado === true || String(res.aprovado).toLowerCase() === 'true';
+            const nota = res.score_tecnico || res.score || 0;
+            const feedback = res.feedback || '';
+            const sugestao = res.sugestao || '';
+
             box.innerHTML = `
-                <strong>Status:</strong> ${res.aprovado ? '<span class="success">✅ Aprovado</span>' : '<span class="danger">❌ Precisa melhorar</span>'}<br>
-                <strong>Nota:</strong> ${res.score_tecnico}/5<br>
-                <strong>Feedback:</strong> ${res.feedback}<br>
-                <strong>Sugestão:</strong> ${res.sugestao || ''}
+                <div style="margin-top: 10px;">
+                    <p><strong>Status:</strong> ${aprovado ? '<span class="success">✅ Aprovado (Dogmática Válida)</span>' : '<span class="danger">❌ Precisa Ajustar (Senso Comum)</span>'}</p>
+                    <p><strong>Nota de Fundamentação:</strong> ${nota}/5</p>
+                    <p><strong>Feedback do Professor:</strong> ${feedback}</p>
+                    <p><strong>Direcionamento:</strong> ${sugestao}</p>
+                </div>
             `;
-            if (res.aprovado) {
-                salvarNoBanco("Círculo Hermenêutico", materia, inputCompilado, res.score_tecnico, []);
+            if (aprovado) {
+                salvarNoBanco("Círculo Hermenêutico", materia, inputCompilado, nota, []);
             }
+        } else {
+            box.innerHTML = "<p style='color: #ef4444;'>Falha ao processar validação jurídica.</p>";
         }
     }
 
