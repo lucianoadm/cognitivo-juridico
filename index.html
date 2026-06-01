@@ -297,52 +297,99 @@
 
     // === Chamada à Gemini ===
 async function chamarGemini(promptSistema, promptUsuario) {
-    const apiKey = document.getElementById('api-key').value;
+
+    const apiKey = document.getElementById('api-key').value.trim();
+
     if (!apiKey) {
-        alert("Por favor, configure sua API Original Key.");
+        alert("Por favor, informe sua API Key.");
         return null;
     }
-    localStorage.setItem('gemini_api_key', apiKey);
 
-    // 1. URL Estável v1
-    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-    
-    // 2. Estrutura de Payload exigida pelo Gemini v1 (Incluindo systemInstruction de forma explícita)
+    localStorage.setItem("gemini_api_key", apiKey);
+
+    const url =
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
     const payload = {
+        systemInstruction: {
+            role: "system",
+            parts: [
+                {
+                    text: promptSistema
+                }
+            ]
+        },
+
         contents: [
             {
                 role: "user",
-                parts: [{ text: promptUsuario }]
+                parts: [
+                    {
+                        text: promptUsuario
+                    }
+                ]
             }
         ],
-        systemInstruction: {
-            parts: [{ text: promptSistema }]
-        },
+
         generationConfig: {
-            responseMimeType: "application/json"
+            responseMimeType: "application/json",
+            temperature: 0.3,
+            maxOutputTokens: 4096
         }
     };
 
     try {
+
+        console.log("URL:", url);
+        console.log("PAYLOAD:", payload);
+
         const response = await fetch(url, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-            console.error("Erro detalhado do Google:", errorData);
-            throw new Error(`Erro HTTP: ${response.status}`);
+
+            const erroTexto = await response.text();
+
+            console.error("GOOGLE RETORNOU:");
+            console.error(erroTexto);
+
+            throw new Error(
+                `HTTP ${response.status} - ${erroTexto}`
+            );
         }
 
         const data = await response.json();
-        return JSON.parse(data.candidates[0].content.parts[0].text);
+
+        console.log("RESPOSTA GEMINI:", data);
+
+        if (
+            !data.candidates ||
+            !data.candidates.length ||
+            !data.candidates[0].content ||
+            !data.candidates[0].content.parts ||
+            !data.candidates[0].content.parts.length
+        ) {
+            throw new Error("Resposta vazia do Gemini.");
+        }
+
+        const textoResposta =
+            data.candidates[0].content.parts[0].text;
+
+        return JSON.parse(textoResposta);
+
     } catch (error) {
+
         console.error("Erro na execução da chamada:", error);
-        alert("Erro na requisição à IA. Verifique o console para mais detalhes ou sua chave API.");
+
+        alert(
+            "Erro ao consultar o Gemini. Verifique o Console (F12)."
+        );
+
         return null;
     }
 }
