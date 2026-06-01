@@ -171,6 +171,12 @@
         <button class="tab-btn active" onclick="switchTab('modulo1')">1. Gravador Cognitivo</button>
         <button class="tab-btn" onclick="switchTab('modulo2')">2. Círculo Hermenêutico</button>
         <button class="tab-btn" onclick="switchTab('modulo3')">3. Configurações</button>
+        <!-- Nova Aba do Dashboard -->
+        <a href="dashboard.html" target="_blank" style="text-decoration: none; flex: 1;">
+            <button class="tab-btn" style="width: 100%; background: linear-gradient(135deg, var(--accent), #6d28d9); color: white;">
+                📊 Dashboard Analítico
+            </button>
+        </a>
     </div>
 
     <!-- Módulo 1 -->
@@ -229,9 +235,13 @@
         <h3>Seu Progresso</h3>
         <p style="font-size:1.3rem;">Total de ciclos completados: <strong id="total-registros" style="color:var(--accent);">0</strong></p>
 
-        <div style="display:flex; gap:12px; margin-top:20px;">
-            <button class="action-btn" onclick="exportarCSV()" style="background:#22c55e;">📥 Exportar CSV (Excel/Power BI)</button>
-            <button class="action-btn" onclick="limparBanco()" style="background:#ef4444;">🗑️ Limpar Histórico</button>
+        <div style="display:flex; gap:12px; margin-top:20px; flex-wrap: wrap;">
+            <!-- Novo Botão para o Dashboard -->
+            <a href="dashboard.html" target="_blank" style="flex: 1; min-width: 200px; text-decoration: none;">
+                <button class="action-btn" type="button" style="background: var(--accent); width: 100%;">📊 Abrir Dashboard Visual</button>
+            </a>
+            <button class="action-btn" onclick="exportarCSV()" style="background:#22c55e; flex: 1; min-width: 200px;">📥 Exportar CSV (Excel/Power BI)</button>
+            <button class="action-btn" onclick="limparBanco()" style="background:#ef4444; flex: 1; min-width: 200px;">🗑️ Limpar Histórico</button>
         </div>
     </div>
 </div>
