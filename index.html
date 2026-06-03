@@ -405,40 +405,43 @@ async function chamarGemini(promptSistema, promptUsuario) {
 }
 
     // === Processamento Módulo 1 ===
+    // === Processamento Módulo 1 (Taxonomia de Bloom Aplicada) ===
     async function processarModulo1() {
         const materia = document.getElementById('m1-materia').value.trim();
         const texto = document.getElementById('m1-transcricao').value.trim();
         if (!texto) return alert("Transcrição vazia.");
 
-        const sysPrompt = `Você é um professor de Direito extremamente rigoroso e didático. Analise o discurso do aluno. Responda EXATAMENTE neste formato JSON, sem formatações adicionais de markdown: {"score_tecnico": 5, "analise_critica": "texto aqui", "lacunas": ["item1", "item2"], "sugestao_melhoria": "texto aqui"}`;
+        const sysPrompt = `Você é um Engenheiro Cognitivo e Professor de Direito. Analise o discurso de evocação ativa do aluno focado em Direito do Trabalho (Controle de Jornada / Horas Extras). Avalie o desempenho com base nos Níveis 1 e 2 de Bloom (Lembrar e Entender). Responda EXATAMENTE neste formato JSON, sem marcações markdown: {"score_tecnico": 5, "nivel_bloom": "Lembrar" ou "Entender", "analise_critica": "texto curto", "lacunas": ["item1", "item2"], "sugestao_melhoria": "texto"}`;
 
         const box = document.getElementById('m1-resultado');
         box.style.display = "block";
-        box.innerHTML = "<p style='color: #60a5fa;'>Analisando cognição jurídica...</p>";
+        box.innerHTML = "<p style='color: #60a5fa;'>Avaliando espectro cognitivo (Bloom Nível 1-2)...</p>";
 
         const res = await chamarGemini(sysPrompt, texto);
         if (res) {
-            // Garante o mapeamento mesmo que a IA mude sutilmente as chaves
             const nota = res.score_tecnico || res.score || 0;
+            const nivel = res.nivel_bloom || 'Lembrar';
             const analise = res.analise_critica || res.analise || '';
             const lacunas = res.lacunas ? (Array.isArray(res.lacunas) ? res.lacunas.join(' • ') : res.lacunas) : 'Nenhuma';
-            const sugestao = res.sugestao_melhoria || res.sugestao || '';
+            const sugerido = res.sugestao_melhoria || res.sugestao || '';
 
             box.innerHTML = `
-                <div style="margin-top: 10px;">
-                    <p><strong>Nota Técnica:</strong> ${nota}/5</p>
-                    <p><strong>Análise Crítica:</strong> ${analise}</p>
-                    <p><strong>Lacunas Mapeadas:</strong> <span style="color: #f87171;">${lacunas}</span></p>
-                    <p><strong>Sugestão de Estudo:</strong> ${sugestao}</p>
+                <div style="margin-top: 10px; border-left: 4px solid #8b5cf6; padding-left: 15px;">
+                    <p><strong>🎯 Diagnóstico Cognitivo:</strong> Nível de Bloom atingido: <span style="color: #60a5fa; font-weight: bold;">${nivel}</span></p>
+                    <p><strong>⭐ Profundidade Dogmática:</strong> ${nota}/5</p>
+                    <p><strong>📝 Análise de Evocação:</strong> ${analise}</p>
+                    <p><strong>🔍 Lacunas de Memória (Esquecidos):</strong> <span style="color: #f87171;">${lacunas}</span></p>
+                    <p><strong>🚀 Próximo Passo Epistêmico:</strong> ${sugerido}</p>
                 </div>
             `;
-            salvarNoBanco("Gravador Cognitivo", materia, texto, nota, Array.isArray(res.lacunas) ? res.lacunas : []);
+            // Armazena o nível de Bloom na estrutura de dados local
+            salvarNoBanco(`Gravador (${nivel})`, materia, texto, nota, Array.isArray(res.lacunas) ? res.lacunas : []);
         } else {
-            box.innerHTML = "<p style='color: #ef4444;'>Falha ao processar resposta da IA.</p>";
+            box.innerHTML = "<p style='color: #ef4444;'>Falha ao processar análise Bloom no Módulo 1.</p>";
         }
     }
 
-    // === Processamento Módulo 2 ===
+    // === Processamento Módulo 2 (Taxonomia de Bloom Aplicada) ===
     async function processarModulo2() {
         const materia = document.getElementById('m2-materia').value.trim();
         const caso = document.getElementById('m2-caso').value.trim();
@@ -447,34 +450,36 @@ async function chamarGemini(promptSistema, promptUsuario) {
 
         if (!caso || !norma || !solucao) return alert("Preencha todos os campos.");
 
-        const sysPrompt = `Você é um professor de Direito de alto nível. Avalie se a norma jurídica citada fundamenta o caso de forma técnica ou se é mero achismo. Responda EXATAMENTE neste formato JSON, sem formatações adicionais de markdown: {"aprovado": true, "score_tecnico": 5, "feedback": "texto aqui", "sugestao": "texto aqui"}`;
+        const sysPrompt = `Você é um Magistrado e Professor de Direito. Avalie a aplicação e a desconstrução analítica do caso de horas extras com base nos Níveis 3 e 4 de Bloom (Aplicar e Analisar). Se o aluno usar achismos ideológicos, classifique como 'Falha (Senso Comum)'. Se a subsunção do fato à norma for técnica, classifique como 'Aplicar' ou 'Analisar'. Responda EXATAMENTE neste formato JSON, sem marcações markdown: {"aprovado": true, "nivel_bloom": "Aplicar" ou "Analisar" ou "Falha", "score_tecnico": 5, "feedback": "texto", "sugestao": "texto"}`;
 
         const inputCompilado = `CASO: ${caso}\nNORMA: ${norma}\nSOLUÇÃO: ${solucao}`;
 
         const box = document.getElementById('m2-resultado');
         box.style.display = "block";
-        box.innerHTML = "<p style='color: #60a5fa;'>Validando raciocínio jurídico...</p>";
+        box.innerHTML = "<p style='color: #60a5fa;'>Auditando silogismo jurídico (Bloom Nível 3-4)...</p>";
 
         const res = await chamarGemini(sysPrompt, inputCompilado);
         if (res) {
             const aprovado = res.aprovado === true || String(res.aprovado).toLowerCase() === 'true';
+            const nivel = res.nivel_bloom || 'Aplicar';
             const nota = res.score_tecnico || res.score || 0;
             const feedback = res.feedback || '';
             const sugestao = res.sugestao || '';
 
             box.innerHTML = `
-                <div style="margin-top: 10px;">
-                    <p><strong>Status:</strong> ${aprovado ? '<span class="success">✅ Aprovado (Dogmática Válida)</span>' : '<span class="danger">❌ Precisa Ajustar (Senso Comum)</span>'}</p>
-                    <p><strong>Nota de Fundamentação:</strong> ${nota}/5</p>
-                    <p><strong>Feedback do Professor:</strong> ${feedback}</p>
-                    <p><strong>Direcionamento:</strong> ${sugestao}</p>
+                <div style="margin-top: 10px; border-left: 4px solid #3b82f6; padding-left: 15px;">
+                    <p><strong>⚖️ Status do Círculo:</strong> ${aprovado ? '<span class="success">✅ Aprovado (Rigor Científico)</span>' : '<span class="danger">❌ Retornado ao Senso Comum</span>'}</p>
+                    <p><strong>🎯 Nível Operacional de Bloom:</strong> <span style="color: #60a5fa; font-weight: bold;">${nivel}</span></p>
+                    <p><strong>⭐ Nota de Coerência (Subsunção):</strong> ${nota}/5</p>
+                    <p><strong>💬 Crítica da Dogmática:</strong> ${feedback}</p>
+                    <p><strong>💡 Direcionamento de Estudo:</strong> ${sugestao}</p>
                 </div>
             `;
             if (aprovado) {
-                salvarNoBanco("Círculo Hermenêutico", materia, inputCompilado, nota, []);
+                salvarNoBanco(`Círculo (${nivel})`, materia, inputCompilado, nota, []);
             }
         } else {
-            box.innerHTML = "<p style='color: #ef4444;'>Falha ao processar validação jurídica.</p>";
+            box.innerHTML = "<p style='color: #ef4444;'>Falha ao processar validação Bloom no Módulo 2.</p>";
         }
     }
 
