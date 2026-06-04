@@ -1,6 +1,6 @@
 # ⚖️ Upgrade Cognitivo Jurídico (App de Engenharia Cognitiva)
 
-Este é um aplicativo web unificado (Single Page Application) desenvolvido para potencializar a retenção e o aprofundamento do conhecimento jurídico. O projeto foi diretamente inspirado nas metodologias de aprendizagem e provocações epistemológicas compartilhadas pelo Juiz do Trabalho **Dr. Maurício Pereira Simões**, aplicando conceitos de Teoria Geral do Direito à rotina de estudos.
+Este é um aplicativo web unificado (Single Page Application) desenvolvido para potencializar a retenção e o aprofundamento do conhecimento jurídico. O projeto foi diretamente inspirado nas metodologias de aprendizagem e provocações epistemológicas + metodologia heutagógica + Taxonomia de Bloom + IA de Elite, aplicando conceitos de Teoria Geral do Direito à rotina de estudos.
 
 O sistema foi desenhado sob medida para estudantes e profissionais do Direito que desejam migrar do senso comum para o rigor científico, utilizando tecnologia local e Inteligência Artificial de forma leve, fluida e com custos rigorosamente controlados.
 
